@@ -44,6 +44,7 @@ def genera_richieste(num,address,port):
 
        # print(primoNumero, secondoNumero, operazione)  print di prova
     operazione=operatore
+
     #2. comporre il messaggio, inviarlo come json e ricevere il risultato
     messaggio={'primoNumero':primoNumero,
     'operazione':operazione,
