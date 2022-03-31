@@ -67,9 +67,13 @@ def genera_richieste1(num,address,port):
     'Voto':voto,
     'Assenze':assenze}
     print(messaggio)
+    print (f"Dati inviati dal server {messaggio}")
     messaggio=json.dumps(messaggio)#Trasformiamo l'oggetto in una stringa
     s.sendall(messaggio.encode("UTF-8"))
     data=s.recv(1024)
+    data=data.decode()
+    data=json.loads(data)
+    print(f"Dati ricevuti dal server {data}")
     
 
     #   esempio: {'studente': 'Studente4', 'materia': 'Italiano', 'voto': 2, 'assenze': 3}
@@ -87,29 +91,128 @@ def genera_richieste1(num,address,port):
 
 #Versione 2 
 def genera_richieste2(num,address,port):
-  #....
+    try:
+        s=socket.socket()
+        s.connect((address,port))
+        print(f"\n{threading.current_thread().name} {num+1}) Connessione al server: {address}:{port}")
+    except:
+        print(f"{threading.current_thread().name} Qualcosa è andato storto, sto uscendo... \n")
+        sys.exit()
   #   1. Generazione casuale di uno studente(valori ammessi: 5 cognomi a caso scelti da una lista)
   #   Per ognuna delle materie ammesse: Matematica, Italiano, inglese, Storia e Geografia)
   #   generazione di un voto (valori ammessi 1 ..10)
   #   e delle assenze (valori ammessi 1..5) 
   #   esempio: pagella={"Cognome1":[("Matematica",8,1), ("Italiano",6,1), ("Inglese",9.5,3), ("Storia",8,2), ("Geografia",8,1)]}
+    #genero numeri che equivalgono al simbolo dell'studenti
+
+        
+        if studenti==0:
+            studente="D'alba"
+        elif studenti==1:
+            studente="Falcone"
+        elif studenti==2:
+            studente="Ghidoli"
+        elif studenti==3: 
+            studente="Rincon"
+        else: 
+            studente="Rescaldina"
+    
+
+    
+    if materie==0:
+        materia="Matematica"
+    elif materie==1:
+        materia="Italiano"
+    elif materie==2:
+        materia="inglese"
+    elif materie==3: 
+        materia="Storia"
+    else: 
+        materia="Geografia"
+
+    studenti=random.randint(0,4)
+    pagella=[]
+    for m in materie: 
+        voto=random.randint(1,10) 
+        assenze=random.randint(1,5)
+        materie=random.randint(0,4) #genero numeri che equivalgono al simbolo dell'studenti
   #2. comporre il messaggio, inviarlo come json
-  #3  ricevere il risultato come json {'studente': 'Cognome1', 'media': 8.0, 'assenze': 8}
-  pass
+    messaggio={'Studente':studente,
+    'Materia':materia,
+    'Voto':voto,
+    'Assenze':assenze}
+    print(messaggio)
+    messaggio=json.dumps(messaggio)#Trasformiamo l'oggetto in una stringa
+    s.sendall(messaggio.encode("UTF-8"))
+    data=s.recv(1024)
+    data=data.decode()
+    data=json.loads(data)
+    print(f"Dati ricevuti dal server {data}")
 
 #Versione 3
 def genera_richieste3(num,address,port):
-  #....
-  #   1. Per ognuno degli studenti ammessi: 5 cognomi a caso scelti da una lista
+    try:
+        s=socket.socket()
+        s.connect((address,port))
+        print(f"\n{threading.current_thread().name} {num+1}) Connessione al server: {address}:{port}")
+    except:
+        print(f"{threading.current_thread().name} Qualcosa è andato storto, sto uscendo... \n")
+        sys.exit()
+  #   1. Generazione casuale di uno studente(valori ammessi: 5 cognomi a caso scelti da una lista)
   #   Per ognuna delle materie ammesse: Matematica, Italiano, inglese, Storia e Geografia)
   #   generazione di un voto (valori ammessi 1 ..10)
   #   e delle assenze (valori ammessi 1..5) 
-  #   esempio: tabellone={"Cognome1":[("Matematica",8,1), ("Italiano",6,1), ("Inglese",9,3), ("Storia",8,2), ("Geografia",8,1)],
-  #                       "Cognome2":[("Matematica",7,2), ("Italiano",5,3), ("Inglese",4,12), ("Storia",5,2), ("Geografia",4,1)],
-  #                        .....}
+  #   esempio: pagella={"Cognome1":[("Matematica",8,1), ("Italiano",6,1), ("Inglese",9.5,3), ("Storia",8,2), ("Geografia",8,1)]}
+    #genero numeri che equivalgono al simbolo dell'studenti
+
+        
+        if studenti==0:
+            studente="D'alba"
+        elif studenti==1:
+            studente="Falcone"
+        elif studenti==2:
+            studente="Ghidoli"
+        elif studenti==3: 
+            studente="Rincon"
+        else: 
+            studente="Rescaldina"
+    
+
+    
+    if materie==0:
+        materia="Matematica"
+    elif materie==1:
+        materia="Italiano"
+    elif materie==2:
+        materia="inglese"
+    elif materie==3: 
+        materia="Storia"
+    else: 
+        materia="Geografia"
+
+    studenti=random.randint(0,4)
+    for stud in studenti:
+        pagella=[]
+        for m in materie: 
+            voto=random.randint(1,10) 
+            assenze=random.randint(1,5)
+            materie=random.randint(0,4) #genero numeri che equivalgono al simbolo dell'studenti
+            pagella.append((m,voto,assenze))
+        tabellone[stud]=pagella
   #2. comporre il messaggio, inviarlo come json
-  #3  ricevere il risultato come json e stampare l'output come indicato in CONSOLE CLIENT V.3
-  pass
+    messaggio={'Studente':studente,
+    'Materia':materia,
+    'Voto':voto,
+    'Assenze':assenze}
+    print(messaggio)
+    pp=pprint.PrettyPrinter(indent=4)
+    pp.pprint(tabellone)
+    tabellone=json.dumps(tabellone)#Trasformiamo l'oggetto in una stringa
+    s.sendall(messaggio.encode("UTF-8"))
+    data=s.recv(1024)
+    data=data.decode()
+    data=json.loads(data)
+    print(f"Dati ricevuti dal server {data}")
 
 if __name__ == '__main__':
     start_time=time.time()

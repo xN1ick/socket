@@ -39,7 +39,7 @@ def ricevi_comandi1(sock_service,addr_client):
             ris="Sufficiente"
         elif voto==7:
             ris="Discreto"
-        elif voto==8 or voto==9:
+        elif voto>=8 and voto<=9:
             ris="buono"
         elif voto==10:
             ris="Ottimo"
@@ -52,17 +52,49 @@ def ricevi_comandi1(sock_service,addr_client):
 
 #Versione 2 
 def ricevi_comandi2(sock_service,addr_client):
-  #....
-  #1.recuperare dal json studente e pagella
-  #2. restituire studente, media dei voti e somma delle assenze :
- pass
+    while True:
+        data=sock_service.recv(1024)
+        if not data: 
+            break
+        data=data.decode()
+        data=json.loads(data)   
+    #1.recuperare dal json studente e pagella
+    studente=data['studente']
+    pagella=data['pagella']
+    #2. restituire studente, media dei voti e somma delle assenze :
+    assenze=0
+    media=0
+    for i,p in enumerate(pagella):
+        media+=int(p[1])
+        assenze=int(p[2])
+        media=media/i
+        ris=str(ris)
+        sock_service.sendall(ris.encode("UTF-8"))
+
+ 
 #Versione 3
 def ricevi_comandi3(sock_service,addr_client):
-  #....
+    while True:
+        data=sock_service.recv(1024)
+        if not data: 
+            break
+        data=data.decode()
+        data=json.loads(data)
   #1.recuperare dal json il tabellone
+        pp=pprint.PrettyPrinter(indent=4)
   #2. restituire per ogni studente la media dei voti e somma delle assenze :
-  pass
-
+        tabellone=[]
+        for stud in data:
+            pagella=data[stud]
+            assenze=0
+            media=0
+            for i,p in enumerate(pagella):
+                media+=int(p[1])
+                assenze=int(p[2])
+                media=media/i
+                ris=str(ris)
+                sock_service.sendall(ris.encode("UTF-8"))
+    
 
 def ricevi_connessioni(sock_listen):
     while True:
